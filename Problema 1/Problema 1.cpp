@@ -3,63 +3,43 @@
 
 using namespace std;
 
-bool verificarFEN(string cadena);
-bool verificarFilas(string fila);
-bool verificarTurno(string turno);
-bool verificarEnroque(string enroque);
-bool verificarAlPaso(string alPaso);
-bool verificarMovimientos(string movimiento);
+class FEN{
+	private:
+		vector<string> partes;
+		vector<string> filas;
+	public:
+		void separarCadena(int modo, string cadena, vector<string> *arreglo);
+		bool verificarFEN(string cadena);
+		bool verificarFilas(string fila);
+		bool verificarTurno(string turno);
+		bool verificarEnroque(string enroque);
+		bool verificarAlPaso(string alPaso);
+		bool verificarMovimientos(string movimiento);
+};
 
-int main(){
-	string cad_C;
-	
-	cout << "Ingrese una cadena de texto: ";
-	getline(cin, cad_C);
-	
-	if(verificarFEN(cad_C)){
-		cout << "La cadena dada cumple con el formato FEN." << endl;
-	}else{
-		cout << "La cadena no cumple con el formato FEN." << endl;
-	}
-	
-	return 0;
-}
-
-bool verificarFEN(string cadena){
+void FEN::separarCadena(int modo, string cadena, vector<string> *arreglo){
 	string aux;
-	vector<string> partes;
-	vector<string> filas;
 	
 	for(int i = 0; i < cadena.length(); i++){
-		char letra = cadena[i];
-		
-		if(letra != ' '){
-			aux += letra;
+		if((cadena[i] != ' ' && modo == 0) || (cadena[i] != '/' && modo == 1)){
+			aux += cadena[i];
 		}else{
-			partes.push_back(aux);
+			arreglo->push_back(aux);
 			aux = "";
 		}
-	} //Colocar esto como una funcion
-	partes.push_back(aux); // Depurar algo aqui
+	}
+	arreglo->push_back(aux);
 	aux = "";
+}
+
+bool FEN::verificarFEN(string cadena){
 	
+	separarCadena(0, cadena, &partes);
 	if(partes.size() != 6){
 		return false;
 	}
 	
-	for(int i = 0; i < partes[0].length(); i++){
-		char f = partes[0][i];
-		
-		if(f != '/'){
-			aux += f;
-		}else{
-			filas.push_back(aux);
-			aux = "";
-		}
-	} //Colocar esto como una funcion
-	filas.push_back(aux); //Y aqui
-	aux = "";
-	
+	separarCadena(1, partes[0], &filas);
 	if(filas.size() != 8){
 		return false;
 	}
@@ -83,15 +63,14 @@ bool verificarFEN(string cadena){
 	}
 
 	return true;	
-} //Esto ta como el culo tengo que ponerlo bonito pe
+}
 
-bool verificarFilas(string fila){
+bool FEN::verificarFilas(string fila){
 	string piezas = "rnbqkpPRNBQK";
 	int casillas = 0;
 	
 	for(int i = 0; i < fila.size(); i++){
 		char casilla = fila[i];
-		
 		
 		if(isdigit(casilla)){
 			casillas += casilla - '0';
@@ -109,9 +88,9 @@ bool verificarFilas(string fila){
 	}
 	
 	return true;
-} // REACOMODAR TODO ESTO
+}
 
-bool verificarTurno(string turno){
+bool FEN::verificarTurno(string turno){
 	if(turno != "w" && turno != "b"){
 		return false;
 	}
@@ -119,7 +98,7 @@ bool verificarTurno(string turno){
 	return true;
 }
 
-bool verificarEnroque(string enroque){
+bool FEN::verificarEnroque(string enroque){
 	string piezas = "KQkq";
 	
 	if(enroque == "-"){
@@ -145,7 +124,7 @@ bool verificarEnroque(string enroque){
     return true;
 }
 
-bool verificarAlPaso(string alPaso){
+bool FEN::verificarAlPaso(string alPaso){
 	if(alPaso == "-"){
 		return true;
 	}
@@ -156,12 +135,12 @@ bool verificarAlPaso(string alPaso){
 	
 	if(!((alPaso[0] >= 'a' && alPaso[0] <= 'h') && (alPaso[1] == '3' || alPaso[1] == '6'))){
 		return false;
-	} // Acomodar esto papito querido
+	}
 	
 	return true;
 }
 
-bool verificarMovimientos(string movimiento){
+bool FEN::verificarMovimientos(string movimiento){
 	for(int i = 0; i < movimiento.size(); i++){
 		if(!isdigit(movimiento[i])){
 			return false;
@@ -169,4 +148,21 @@ bool verificarMovimientos(string movimiento){
 	}
 	
 	return true;
+}
+
+
+int main(){
+	string cad_C;
+	FEN fen;
+	
+	cout << "Ingrese una cadena de texto: ";
+	getline(cin, cad_C);
+	
+	if(fen.verificarFEN(cad_C)){
+		cout << "La cadena dada cumple con el formato FEN." << endl;
+	}else{
+		cout << "La cadena no cumple con el formato FEN." << endl;
+	}
+	
+	return 0;
 }
