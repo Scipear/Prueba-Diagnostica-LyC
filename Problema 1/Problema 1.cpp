@@ -8,29 +8,14 @@ class FEN{
 		vector<string> partes;
 		vector<string> filas;
 	public:
-		void separarCadena(int modo, string cadena, vector<string> *arreglo);
 		bool verificarFEN(string cadena);
 		bool verificarFilas(string fila);
 		bool verificarTurno(string turno);
 		bool verificarEnroque(string enroque);
 		bool verificarAlPaso(string alPaso);
 		bool verificarMovimientos(string movimiento);
+		void separarCadena(int modo, string cadena, vector<string> *arreglo);
 };
-
-void FEN::separarCadena(int modo, string cadena, vector<string> *arreglo){
-	string aux;
-	
-	for(int i = 0; i < cadena.length(); i++){
-		if((cadena[i] != ' ' && modo == 0) || (cadena[i] != '/' && modo == 1)){
-			aux += cadena[i];
-		}else{
-			arreglo->push_back(aux);
-			aux = "";
-		}
-	}
-	arreglo->push_back(aux);
-	aux = "";
-}
 
 bool FEN::verificarFEN(string cadena){
 	
@@ -150,6 +135,20 @@ bool FEN::verificarMovimientos(string movimiento){
 	return true;
 }
 
+void FEN::separarCadena(int modo, string cadena, vector<string> *arreglo){
+	string aux;
+	
+	for(int i = 0; i < cadena.length(); i++){
+		if((cadena[i] != ' ' && modo == 0) || (cadena[i] != '/' && modo == 1)){
+			aux += cadena[i];
+		}else{
+			arreglo->push_back(aux);
+			aux = "";
+		}
+	}
+	arreglo->push_back(aux);
+	aux = "";
+}
 
 int main(){
 	string cad_C;

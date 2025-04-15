@@ -75,16 +75,7 @@ void Calculadora::cambiarNotacion(string expresion){
 				if(!operadores.empty()){
 					operadores.pop();
 				}
-				cout << "Aqui?" << endl;
 			}
-		}
-		
-		if(!operadores.empty()){
-			cout << "iteracion: " << i << " ultimo operador ingresado: " << operadores.top() << endl;
-		}
-		
-		if(!notacion.empty()){
-			cout << "iteracion: " << i << " notacion va: " << notacion.back() << endl;
 		}
 	}
 	
